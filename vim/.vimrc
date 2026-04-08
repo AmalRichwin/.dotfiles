@@ -24,6 +24,9 @@ filetype indent on
 " Turn syntax highlighting on.
 syntax on
 
+" enable autoindents
+set smartindent
+
 " Add numbers to the file.
 set number
 

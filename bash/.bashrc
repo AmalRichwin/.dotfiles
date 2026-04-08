@@ -8,16 +8,25 @@ case $- in
       *) return;;
 esac
 
-echo "
-
+text="
  ██████╗  ████████  ██████╗  ██╗  ██╗ ██╗    ██╗ ████████ ███╗   ██╗ 
  ██╔══██╗ ╚══██╗   ██╔════╝  ██║  ██║ ██║    ██║ ╚══██╗   ████╗  ██║ 
  ██████╔╝    ██║   ██║       ███████║ ██║ █╗ ██║    ██║   ██╔██╗ ██║ 
  ██╔══██╗    ██║   ██║       ██╔══██║ ██║███╗██║    ██║   ██║╚██╗██║ 
  ██║  ██║    ██║   ╚██████╗  ██║  ██║ ╚███╔███╔╝    ██║   ██║ ╚████║ 
  ╚═╝  ╚═╝ ████████  ╚═════╝  ╚═╝  ╚═╝  ╚══╝╚══╝  ████████ ╚═╝  ╚═══╝ 
-
 "
+
+color='\033[1;36m' # Bright red
+reset='\033[0m'
+
+# Print each character with a delay
+for ((i = 0; i < ${#text}; i++)); do
+    echo -ne "${color}${text:$i:1}${reset}"
+    sleep 0.001  # Adjust the delay as needed
+done
+echo
+
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -153,10 +162,26 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-fish
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
+# fish
 
 # bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
+export BUN_INSTALL="$HOME/.bun";
+export PATH=$BUN_INSTALL/bin:$PATH;
+
+# nvcc
+export PATH=/usr/local/cuda/bin:$PATH
+
+
+# execute fish
+exec fish
+
+# pnpm
+export PNPM_HOME="/home/richwin/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# opencode
+export PATH=/home/richwin/.opencode/bin:$PATH

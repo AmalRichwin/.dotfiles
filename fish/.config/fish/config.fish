@@ -5,7 +5,15 @@ if status is-interactive
     export PYENV_ROOT="$HOME/.pyenv"
     command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
-    export VOLTA_HOME="$HOME/.volta"
-    export PATH="$VOLTA_HOME/bin:$PATH"
     #direnv hook fish | source
 end
+
+set _CONDA_ROOT "/home/richwin/miniconda3"
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+if test -f /home/richwin/miniconda3/bin/conda
+    eval /home/richwin/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+end
+# <<< conda initialize <<<
+
+zoxide init fish | source
