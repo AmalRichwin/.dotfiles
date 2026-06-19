@@ -1,259 +1,154 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""               
-"               
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
 "               ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
 "               ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
-"               ██║   ██║██║██╔████╔██║██████╔╝██║     
-"               ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║     
+"               ██║   ██║██║██╔████╔██║██████╔╝██║
+"               ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║
 "                ╚████╔╝ ██║██║ ╚═╝ ██║██║  ██║╚██████╗
 "                 ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝
-"               
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""               
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Disable compatibility with vi which can cause unexpected issues.
-set nocompatible
+" ~/.vimrc — plain Vim, no plugins
 
-" Enable type file detection. Vim will be able to try to detect the type of file is use.
-filetype on
-
-" Enable plugins and load plugin for the detected file type.
-filetype plugin on
-
-" Load an indent file for the detected file type.
-filetype indent on
-
-" Turn syntax highlighting on.
-syntax on
-
-" enable autoindents
-set smartindent
-
-" Add numbers to the file.
-set number
-
-" No need to set explicitly under Neovim: always uses UTF-8 as the default encoding.
+" ============================================================
+" General
+" ============================================================
+set nocompatible              " disable Vi compatibility mode
+filetype plugin indent on     " enable filetype detection, plugins, and indentation
+syntax on                     " enable syntax highlighting
 set encoding=UTF-8
 
-" Set shift width to 4 spaces.
-set shiftwidth=4
+" ============================================================
+" UI
+" ============================================================
+set number relativenumber     " absolute line on cursor line, relative elsewhere
+set signcolumn=yes            " always show sign column (prevents layout shift)
+set cursorline                " highlight the line the cursor is on
+set scrolloff=8               " keep lines visible above/below cursor when scrolling
+set nowrap                    " do not wrap long lines
+set showcmd                   " show partial command on the last line
+set showmode                  " show current mode on the last line
+set wildmenu                  " tab-completion menu in command mode
+set wildmode=longest:full,full " complete longest match first, then cycle
+set showmatch                 " briefly jump to matching bracket
+set laststatus=2              " always show the status line
 
-" Set tab width to 4 columns.
-set tabstop=4
+" ============================================================
+" Editing
+" ============================================================
+set tabstop=4                 " tab displays as 4 spaces wide
+set shiftwidth=4              " indent/dedent by 4 spaces
+set expandtab                 " insert spaces instead of tabs
+set smartindent               " auto-indent new lines
+set backspace=indent,eol,start  " backspace over indent, line breaks, insert start
 
-" Use space characters instead of tabs.
-set expandtab
+" ============================================================
+" Search
+" ============================================================
+set hlsearch                  " highlight all search matches
+set incsearch                 " show matches as you type
+set ignorecase                " case-insensitive search
+set smartcase                 " override ignorecase when pattern has uppercase
 
-" Do not save backup files.
-set nobackup
+" ============================================================
+" Clipboard & mouse
+" ============================================================
+set clipboard=unnamed         " use system clipboard for yank/paste
+set mouse=a                   " mouse support in all modes
 
-" Do not let cursor scroll below or above N number of lines when scrolling.
-set scrolloff=10
-
-" Do not wrap lines. Allow long lines to extend as far as the line goes.
-set nowrap
-
-" While searching though a file incrementally highlight matching characters as you type.
-set incsearch
-
-" Ignore capital letters during search.
-set ignorecase
-
-" Override the ignorecase option if searching for capital letters.
-" This will allow you to search specifically for capital letters.
-set smartcase
-
-" Show partial command you type in the last line of the screen.
-set showcmd
-
-" Show the mode you are on the last line.
-set showmode
-
-" Show matching words during a search.
-set showmatch
-
-" Use highlighting when doing a search.
-set hlsearch
-
-" Set the commands to save in history default number is 20.
-set history=1000
-
-" Enable auto completion menu after pressing TAB.
-set wildmenu
-
-" Make wildmenu behave like similar to Bash completion.
-set wildmode=list:longest
-
-" There are certain files that we would never want to edit with Vim.
-" Wildmenu will ignore files with these extensions.
+" ============================================================
+" Files
+" ============================================================
+set autoread                  " reload file changed on disk outside Vim
+set hidden                    " switch buffers without saving first
+set noswapfile                " no swap files
+set nobackup                  " no backup files
+set history=1000              " command-line history depth
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
-" PLUGINS ---------------------------------------------------------------- {{{
-
-call plug#begin('~/.vim/plugged')
-
-  Plug 'dense-analysis/ale'
-
-  Plug 'preservim/nerdtree'
-
-  Plug 'valloric/youcompleteme'
-
-  Plug 'dracula/vim', { 'as': 'dracula' }
-
-  Plug 'sheerun/vim-polyglot'
- 
-  Plug 'ryanoasis/vim-devicons'
-
-call plug#end()
-
-" }}}
-
-" MAPPINGS --------------------------------------------------------------- {{{
-
-" Set the backslash as the leader key.
-let mapleader = "\\"
-
-" Press \\ to jump back to the last cursor position.
-nnoremap <leader>\ ``
-
-" Press \p to print the current file to the default printer from a Linux operating system.
-" View available printers:   lpstat -v
-" Set default printer:       lpoptions -d <printer_name>
-" <silent> means do not display output.
-nnoremap <silent> <leader>p :%w !lp<CR>
-
-" Type jj to exit insert mode quickly.
-inoremap jj <Esc>
-
-" Press the space bar to type the : character in command mode.
-nnoremap <space> :
-
-" Pressing the letter o will open a new line below the current one.
-" Exit insert mode after creating a new line above or below the current line.
-nnoremap o o<esc>
-nnoremap O O<esc>
-
-" Center the cursor vertically when moving to the next word during a search.
-nnoremap n nzz
-nnoremap N Nzz
-
-" Yank from cursor to the end of line.
-nnoremap Y y$
-
-" Map the F5 key to run a Python script inside Vim.
-" We map F5 to a chain of commands here.
-" :w saves the file.
-" <CR> (carriage return) is like pressing the enter key.
-" !clear runs the external clear screen command.
-" !python3 % executes the current file with Python.
-nnoremap <f5> :w <CR>:!clear <CR>:!python3 % <CR>
-
-" You can split the window in Vim by typing :split or :vsplit.
-" Navigate the split view easier by pressing CTRL+j, CTRL+k, CTRL+h, or CTRL+l.
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
-
-" Resize split windows using arrow keys by pressing:
-" CTRL+UP, CTRL+DOWN, CTRL+LEFT, or CTRL+RIGHT.
-noremap <c-up> <c-w>+
-noremap <c-down> <c-w>-
-noremap <c-left> <c-w>>
-noremap <c-right> <c-w><
-
-" NERDTree specific mappings.
-" Map the F3 key to toggle NERDTree open and close.
-nnoremap <F3> :NERDTreeToggle<cr>
-
-" Have nerdtree ignore certain files and directories.
-let NERDTreeIgnore=['\.git$', '\.jpg$', '\.mp4$', '\.ogg$', '\.iso$', '\.pdf$', '\.pyc$', '\.odt$', '\.png$', '\.gif$', '\.db$']
-
-" }}}
-
-" VIMSCRIPT -------------------------------------------------------------- {{{
-
-" Enable the marker method of folding.
-augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
-augroup END
-
-" If the current file type is HTML, set indentation to 2 spaces.
-autocmd Filetype html setlocal tabstop=2 shiftwidth=2 expandtab
-
-" If Vim version is equal to or greater than 7.3 enable undofile.
-" This allows you to undo changes to a file even after saving it.
 if version >= 703
     set undodir=~/.vim/backup
     set undofile
     set undoreload=10000
 endif
 
-" You can split a window into sections by typing `:split` or `:vsplit`.
-" Display cursorline and cursorcolumn ONLY in active window.
-augroup cursor_off
+" ============================================================
+" Colors
+" ============================================================
+set background=dark
+colorscheme default
+
+" ============================================================
+" Key mappings
+" ============================================================
+let mapleader = "\\"
+
+nnoremap <leader>\ ``          " jump back to last cursor position
+nnoremap jj <Esc>              " quick exit insert mode
+inoremap jj <Esc>
+nnoremap <space> :             " space opens command line
+nnoremap o o<Esc>              " stay in normal mode after opening a line
+nnoremap O O<Esc>
+nnoremap n nzz                 " center match when searching
+nnoremap N Nzz
+nnoremap Y y$                  " yank to end of line
+
+" Split navigation
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+" Resize splits
+noremap <C-Up>    <C-w>+
+noremap <C-Down>  <C-w>-
+noremap <C-Left>  <C-w>>
+noremap <C-Right> <C-w><
+
+" Run Python script (F5)
+nnoremap <F5> :w<CR>:!clear<CR>:!python3 %<CR>
+
+" ============================================================
+" Autocommands
+" ============================================================
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
+
+augroup filetype_html
+    autocmd!
+    autocmd FileType html setlocal tabstop=2 shiftwidth=2 expandtab
+augroup END
+
+augroup cursor_active_window
     autocmd!
     autocmd WinLeave * set nocursorline nocursorcolumn
     autocmd WinEnter * set cursorline cursorcolumn
 augroup END
 
-" If GUI version of Vim is running set these options.
+" ============================================================
+" GUI (MacVim / gvim)
+" ============================================================
 if has('gui_running')
-
-    " Set the background tone.
-    set background=dark
-    
-    colorscheme dracula
-
-    " Set a custom font you have installed on your computer.
-    " Syntax: <font_name>\ <weight>\ <size>
     set guifont=Monospace\ Regular\ 12
+    set guioptions-=T           " hide toolbar
+    set guioptions-=L           " hide left scrollbar
+    set guioptions-=r           " hide right scrollbar
+    set guioptions-=m           " hide menu bar
+    set guioptions-=b           " hide bottom scrollbar
 
-    " Display more of the file by default.
-    " Hide the toolbar.
-    set guioptions-=T
-
-    " Hide the the left-side scroll bar.
-    set guioptions-=L
-
-    " Hide the the left-side scroll bar.
-    set guioptions-=r
-
-    " Hide the the menu bar.
-    set guioptions-=m
-
-    " Hide the the bottom scroll bar.
-    set guioptions-=b
-
-    " Map the F4 key to toggle the menu, toolbar, and scroll bar.
-    " <Bar> is the pipe character.
-    " <CR> is the enter key.
     nnoremap <F4> :if &guioptions=~#'mTr'<Bar>
         \set guioptions-=mTr<Bar>
         \else<Bar>
         \set guioptions+=mTr<Bar>
         \endif<CR>
-
 endif
 
-" }}}
-
-" STATUS LINE ------------------------------------------------------------ {{{
-
-" Clear status line when vimrc is reloaded.
+" ============================================================
+" Status line
+" ============================================================
 set statusline=
-
-" Status line left side.
 set statusline+=\ %F\ %M\ %Y\ %R
-
-" Use a divider to separate the left side from the right side.
 set statusline+=%=
-
-" Status line right side.
-"set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
-
-" Show the status on the second to last line.
-set laststatus=2
-
-" }}}
-
-colorscheme dracula
