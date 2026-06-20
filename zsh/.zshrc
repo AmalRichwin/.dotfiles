@@ -31,3 +31,14 @@ fi
 # plugins (must load after compinit; vi-mode should be last)
 [[ -f "$HOME/.plugins.zsh" ]] && source "$HOME/.plugins.zsh"
 
+# Open the current command in your $EDITOR (e.g., neovim)
+# Press Ctrl+X followed by Ctrl+E to trigger
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+
+# Expand history expressions (!!, !$, etc.) on space
+bindkey ' ' magic-space
+
+# Machine-local overrides (tool installs, secrets, etc.)
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
