@@ -2,12 +2,12 @@
 
 add_newline = false
 command_timeout = 1000
-format = """$os$username$hostname$kubernetes$directory$git_branch$git_status"""
+format = """$os$username$hostname$kubernetes$directory$git_branch$git_status$nodejs$golang$python $character"""
 
-# Drop ugly default prompt characters
 [character]
-success_symbol = ''
-error_symbol = ''
+success_symbol = "[❯](green)"
+error_symbol   = "[❯](red)"
+vimcmd_symbol  = "[❮](blue)"
 
 # ---
 
@@ -16,10 +16,9 @@ format = '[$symbol](bold white) '
 disabled = false
 
 [os.symbols]
-Windows = ' '
-Arch = '󰣇'
-Ubuntu = ''
-Macos = '󰀵'
+Ubuntu  = "󰕈"
+Arch    = "󰣇"
+Macos   = ""
 
 # ---y
 
@@ -39,7 +38,8 @@ disabled = false
 
 # Shows current directory
 [directory]
-truncation_length = 1
+truncation_length = 4
+truncate_to_repo  = true
 truncation_symbol = '…/'
 home_symbol = '󰋜 ~'
 read_only_style = '197'
@@ -48,7 +48,7 @@ format = 'at [$path]($style)[$read_only]($read_only_style) '
 
 # Shows current git branch
 [git_branch]
-symbol = ' '
+symbol = ' '
 format = 'via [$symbol$branch]($style)'
 # truncation_length = 4
 truncation_symbol = '…/'
@@ -58,17 +58,17 @@ style = 'bold green'
 [git_status]
 format = '([ \( $all_status$ahead_behind\)]($style) )'
 style = 'bold green'
-conflicted = '[ confliced=${count}](red) '
+conflicted = "[⚡$count ](bold red)"
 up_to_date = '[󰘽 up-to-date](green) '
-untracked = '[󰋗 untracked=${count}](red) '
-ahead = ' ahead=${count}'
-diverged = ' ahead=${ahead_count}  behind=${behind_count}'
-behind = ' behind=${count}'
+untracked  = "[?$count ](bold white)"
+ahead      = "[⇡$count ](bold cyan)"
+behind     = "[⇣$count ](bold cyan)"
+diverged   = "[⇡$ahead_count⇣$behind_count ](bold cyan)"
 stashed = '[ stashed=${count}](green) '
-modified = '[󰛿 modified=${count}](yellow) '
-staged = '[󰐗 staged=${count}](green) '
+staged     = "[+$count ](bold green)"
+modified   = "[●$count ](bold yellow)"
 renamed = '[󱍸 renamed=${count}](yellow) '
-deleted = '[󰍶 deleted=${count}](red) '
+deleted    = "[✘$count ](bold red)"
 
 # Shows kubernetes context and namespace
 [kubernetes]
@@ -90,10 +90,13 @@ disabled = true
 disabled = true
 
 [nodejs]
-disabled = true
+symbol = ""
+format = "[$symbol $version](green) "
+
+[golang]
+symbol = ""
+format = "[$symbol $version](cyan) "
 
 [ruby]
 disabled = true
 
-[terraform]
-disabled = true

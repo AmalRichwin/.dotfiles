@@ -9,9 +9,6 @@ if command -v eza &>/dev/null; then
   alias ll='eza -la --icons --git'
   alias l='eza -l --icons'
   alias tree='eza --tree --icons'
-
-  # reuse ls completions for eza (avoids defining a separate completion function)
-  compdef eza=ls
 fi
 
 # ── fd (fast find) ───────────────────────────────────────────────────────────
@@ -27,6 +24,11 @@ if command -v rg &>/dev/null; then
   alias rgi='rg --ignore-case'
   alias rgf='rg --files'
   alias rgl='rg --files-with-matches'
+fi
+
+# ── bat (better cat) ─────────────────────────────────────────────────────────
+if command -v bat &>/dev/null; then
+  alias cat='bat --paging=never'
 fi
 
 # =====================================================================
@@ -49,35 +51,29 @@ alias -- -='cd -'
 
 if command -v git &>/dev/null; then
 
-  # Top changed files — high churn = potential drag / blast radius
   git-churn() {
     local since="${1:-1 year ago}"
     git log --format=format: --name-only --since="$since" \
       | sort | uniq -c | sort -nr | head -20
   }
 
-  # Contributors ranked by commits — watch for bus factor
   git-authors() {
     git shortlog -sn --no-merges "$@"
   }
 
-  # Recent contributors — who is actually maintaining this now
   git-authors-recent() {
     git shortlog -sn --no-merges --since="${1:-6 months ago}"
   }
 
-  # Bug hotspot files — commits mentioning fix/bug/broken
   git-bugspots() {
     git log -i -E --grep="fix|bug|broken" --name-only --format='' \
       | sort | uniq -c | sort -nr | head -20
   }
 
-  # Commit velocity by month — accelerating, steady, or dying
   git-velocity() {
     git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
   }
 
-  # Reverts / hotfixes — how often is the team firefighting
   git-firefight() {
     local since="${1:-1 year ago}"
     if command -v rg &>/dev/null; then
@@ -87,7 +83,6 @@ if command -v git &>/dev/null; then
     fi
   }
 
-  # Run all diagnostics in one pass
   git-audit() {
     local since="${1:-1 year ago}"
 
@@ -124,3 +119,37 @@ if command -v git &>/dev/null; then
   alias gaudit='git-audit'
 
 fi
+
+
+# Get week number
+alias week='date +%V'
+
+# Show active network interfaces
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+
+# IP addresses
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en0"
+alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+	alias "${method}"="lwp-request -m '${method}'"
+done
+
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
+
+
+# macOS has no `md5sum`, so use `md5` as a fallback
+command -v md5sum > /dev/null || alias md5sum="md5"
+
+# macOS has no `sha1sum`, so use `shasum` as a fallback
+command -v sha1sum > /dev/null || alias sha1sum="shasum"
+
+# copy to clipboard
+alias copy='pbcopy'
+
+# Trim new lines and copy to clipboard
+alias c="tr -d '\n' | pbcopy"

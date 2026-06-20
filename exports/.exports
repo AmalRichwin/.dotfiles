@@ -1,0 +1,28 @@
+# Shared environment variables for bash, zsh, and fish.
+
+# ── Editors (git, crontab, visudo, etc.) ────────────────────────────────────
+export EDITOR='nvim'
+export VISUAL='nvim'
+export GIT_EDITOR='nvim'
+export SUDO_EDITOR='nvim'
+
+# ── GPG ──────────────────────────────────────────────────────────────────────
+export GPG_TTY=$(tty)
+
+# ── PATH ─────────────────────────────────────────────────────────────────────
+export PATH="$HOME/.local/bin:$HOME/.dotfiles/bin:$PATH"
+export PATH="$PATH:$HOME/.lmstudio/bin"
+export PATH="/opt/firefox/firefox:$PATH"
+export PATH="/usr/local/cuda/bin:$PATH"
+export PATH="$HOME/.opencode/bin:$PATH"
+
+# ── Node (nvm) ───────────────────────────────────────────────────────────────
+export NVM_DIR="$HOME/.nvm"
+
+# ── bun ──────────────────────────────────────────────────────────────────────
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# ── pnpm ─────────────────────────────────────────────────────────────────────
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"

@@ -20,9 +20,14 @@ autoload -Uz compinit && compinit -i
 # zoxide
 eval "$(zoxide init zsh)"
 
-# prompt
-[[ -f "$HOME/.prompt.zsh" ]] && source "$HOME/.prompt.zsh"
+# Shared aliases (bash/zsh)
+[[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
 
-# Custom aliases
-[[ -f "$HOME/.aliases.zsh" ]] && source "$HOME/.aliases.zsh"
+# zsh-only: reuse ls completions for eza
+if command -v eza &>/dev/null; then
+  compdef eza=ls
+fi
+
+# plugins (must load after compinit; vi-mode should be last)
+[[ -f "$HOME/.plugins.zsh" ]] && source "$HOME/.plugins.zsh"
 
