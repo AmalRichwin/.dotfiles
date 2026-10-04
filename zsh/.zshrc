@@ -18,7 +18,7 @@ autoload -Uz compinit && compinit -i
 [[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
 
 # zoxide
-eval "$(zoxide init zsh)"
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
 # Shared aliases (bash/zsh)
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"

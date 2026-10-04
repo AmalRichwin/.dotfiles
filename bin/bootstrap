@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Set up a fresh machine: Homebrew, Brewfile packages, git-cloned plugins, then stow.
+set -euo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CLAUDE_COMPLETION_DIR="$HOME/.local/share/zsh-claudecode-completion"
+
+find_brew() {
+  command -v brew 2>/dev/null && return 0
+  local brew_bin
+  for brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    [[ -x "$brew_bin" ]] && printf '%s\n' "$brew_bin" && return 0
+  done
+  return 1
+}
+
+if ! find_brew >/dev/null; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+eval "$("$(find_brew)" shellenv bash)"
+
+brew bundle --file "$DOTFILES_DIR/Brewfile"
+
+if [[ -d "$CLAUDE_COMPLETION_DIR/.git" ]]; then
+  git -C "$CLAUDE_COMPLETION_DIR" pull --ff-only
+else
+  git clone --depth 1 https://github.com/wbingli/zsh-claudecode-completion.git "$CLAUDE_COMPLETION_DIR"
+fi
+
+exec "$DOTFILES_DIR/bin/stow-dotfiles"
